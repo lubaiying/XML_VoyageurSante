@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cab="http://www.ujf-grenoble.fr/l3miage/medical"
+           targetNamespace="http://www.ujf-grenoble.fr/l3miage/medical"
+           elementFormDefault="qualified">
+
+    
+    <xs:element name="cabinet" type="cab:Cabinet"/>
+    <xs:complexType name="Cabinet">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="adresse" type="cab:Adresse"/>
+            <xs:element name="infirmiers" type="cab:Infirmiers"/>
+            <xs:element name="patients" type="cab:Patients"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    
+    
+    <xs:complexType name="Adresse">
+        <xs:sequence>
+            <xs:element name="étage" type="xs:int" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="numéro" type="xs:int" minOccurs="0" maxOccurs="1"/> 
+            <xs:element name="rue" type="xs:string"/>   
+            <xs:element name="ville" type="xs:string"/>
+            <xs:element name="codePostal" type="cab:CodePostal" />
+            
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="CodePostal">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(\d){5}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    
+    
+    <xs:complexType name="Infirmiers">
+        <xs:sequence>
+            <xs:element name="infirmier" type="cab:Infirmier" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="Infirmier">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="prénom" type="xs:string"/>
+            <xs:element name="photo" type="cab:Photo"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="cab:Id" use="required"/>
+    </xs:complexType>
+    
+    <xs:simpleType name="Id">
+        <xs:restriction base="xs:int">
+            <xs:pattern value="(\d){3}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="Photo">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Za-z]{1,}\.(jpg|png)"/>
+        </xs:restriction>
+     </xs:simpleType>
+     
+     
+     
+     <xs:complexType name="Patients">
+         <xs:sequence>
+            <xs:element name="patient" type="cab:Patient" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+     </xs:complexType>
+     
+     <xs:complexType name="Patient">
+         <xs:sequence>
+             <xs:element name="nom" type="xs:string"/>
+             <xs:element name="prénom" type="xs:string"/>
+             <xs:element name="sexe" type="cab:Sexe"/>
+             <xs:element name="naissance" type="xs:date"/>
+             <xs:element name="numéro" type="cab:Numéro"/>
+             <xs:element name="adresse" type="cab:Adresse"/>
+             <xs:element name="visite" type="cab:Visit"/>
+         </xs:sequence>
+     </xs:complexType>
+     
+     <xs:simpleType name="Sexe">
+         <xs:restriction base="xs:string">
+             <xs:pattern value="F|H"/>
+         </xs:restriction>
+     </xs:simpleType>
+     
+     <xs:simpleType name="Numéro">
+         <xs:restriction base="xs:string">
+             <xs:pattern value="\d{15}"/>
+         </xs:restriction>
+     </xs:simpleType>
+     
+     <xs:complexType name="Visit">
+        <xs:sequence>
+            <xs:element name="acte" type="cab:Acte"  maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="date" type="xs:date" use="required"/>
+        <xs:attribute name="intervenant" type="cab:Intervenant" use="optional"/>
+     </xs:complexType>
+
+     <xs:complexType name="Acte">
+         <xs:attribute name="id" type="cab:Id" />
+     </xs:complexType>
+
+     <xs:simpleType name="Intervenant">
+        <xs:restriction base="cab:Id">
+            <xs:enumeration value="001"/>
+            <xs:enumeration value="002"/>
+            <xs:enumeration value="003"/>
+        </xs:restriction>
+     </xs:simpleType>
+
+</xs:schema>
